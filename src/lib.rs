@@ -1,6 +1,7 @@
 mod utils;
 
 use wasm_bindgen::prelude::*;
+use js_sys::Array;
 
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
 // allocator.
@@ -73,5 +74,11 @@ impl Game {
             food,
             snake, 
         }
+    }
+
+    // Return JS array
+    // Not good habit because this clones/copies things into JS types, rather than just referencing a pointer in the wasm memory array
+    pub fn get_snake(&self) -> Array {
+        self.snake.clone().into_iter().map(JsValue::from).collect()
     }
 }
