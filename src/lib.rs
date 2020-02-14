@@ -19,7 +19,7 @@ pub fn greet() {
 }
 
 #[wasm_bindgen]
-#[derive(Copy, Cloen)]
+#[derive(Copy, Clone)]
 pub struct Vector {
     pub x: f64,
     pub y: f64,
@@ -27,8 +27,17 @@ pub struct Vector {
 
 #[wasm_bindgen]
 impl Vector {
+    #[wasm_bindgen(constructor)]
     pub fn new(x: f64, y: f64) -> Vector {
         Vector {x, y}
+    }
+
+    pub fn subtract(&self, other: &Vector) -> Vector {
+        Vector::new(self.x - other.x, self.y - other.y)
+    }
+
+    pub fn scale_by(&self, number: f64) -> Vector {
+        Vector::new(self.x * number, self.y * number)
     }
 }
 
@@ -43,6 +52,7 @@ pub struct Game {
     snake: Vec<Vector>,
 }
 
+#[wasm_bindgen]
 impl Game {
     #[wasm_bindgen(constructor)]
     pub fn new(width: i32, height: i32, speed: f64, snake_length: i32, direction: Vector) -> Game {
@@ -58,9 +68,10 @@ impl Game {
             width, 
             height, 
             speed, 
-            snake, 
+            score: 0,
             direction,
-            food
+            food,
+            snake, 
         }
     }
 }
